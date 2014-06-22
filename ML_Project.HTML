@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Exercising the Correct Way</title>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h3>Exercising the Correct Way</h3>
+
+<h4>Executive Summary</h4>
+
+<p>It is possible to predict the &quot;correctness&quot; of exercise of an individual
+with a very high degree of accuracy given 53 measurements on that individual.
+This conclusion has been arrived at by investigating two prediction algorithms:</p>
+
+<ul>
+<li>Recursive Partitioning</li>
+<li>Random Forests</li>
+</ul>
+
+<p>The Recursive Partioning algorithm was a poor performer, with an estimated accuracy
+of only approximately 54.7%. On the other hand the Random Forests algorithm produced an
+estimated accuracy of approximately 99.8%.
+There is a steep computational cost associated with the more successful algorithm,
+however. On a 3Ghz 2-CPU/4-Core processor the less successful algorithm executed in about 5 minutes, but the Randon Forests algorithm concluded after about 6 hours of execution. This is a 72-fold increase in computational time.</p>
+
+<h4>Methodology</h4>
+
+<p>The training dataset had 19622 observations and 154 columns of data.
+Examination of this dataset revealed that some of the columns were metadata
+(that is, administrative information dealing with survey collection details), and
+many other columns were empty or had copious amounts of missing data. The metadata occupied the first 6 columns of the file and this data was cut out of the working file. (The same
+was done to the test dataset). </p>
+
+<p>Also supplied was a test dataset with 20 observations. A pragmatic decision was made to restrict the working version of the training dataset to those columns in the TEST dataset that had no missing or NA data. This resulted in datasets that had 54 columns each, the last of which was either &quot;classe&quot; (the response variable) or &quot;problem_id&quot; (a sequential integer).</p>
+
+<p>The original &quot;training&quot; dataset (after the preceding variable reductions) was then split 60/40 into:</p>
+
+<ul>
+<li>a training portion (df_train), and </li>
+<li>a validation portion (df_valid)</li>
+</ul>
+
+<p>The caret package was then used to provide the algorithms used to fit the two prediction models using just the df_train random subset of the observations. Each model was then validated using the df_valid subset. Finally, the model that was fitted to the df_train subsample was run against the test dataset to yield the test set predictions.</p>
+
+<p>It is possible that fewer than 53 of the features used in the fitted model could have sufficed, but this possibility 
+was not pursued owing to the lack of time.</p>
+
+<h4>Results</h4>
+
+<h5>Recursive Partioning</h5>
+
+<p>Predicted(down) vs Actual(across) for Recursive Partioning (using the validation subset)</p>
+
+<pre><code>        A     B      C      D      E   
+
+  A   1805   296    147    364    310
+
+  B     88   721    119    293    253
+
+  C    333   501   1102   629     219
+
+  D     0      0     0      0       0
+
+  E     6      0     0     0      660
+</code></pre>
+
+<p>Accuracy =  (1805+721+1102+0+660)/(7846) = 54.7%</p>
+
+<h5>Random Forests</h5>
+
+<p>Predicted(down) vs Actual(across) for Random Forests (using the validation subset)</p>
+
+<pre><code>        A       B         C       D      E 
+
+
+  A    2232       3       0       0       0
+
+  B       0    1511       1       0       0
+
+  C       0       4    1367       3       0
+
+  D       0       0       0     1283      4
+
+  E       0       0       0        0   1438
+</code></pre>
+
+<p>Accuracy=(2232+1511+1367+1283+1438)/7846 =99.8%     </p>
+
+<h3>Technical Appendix I: Code (only the substantive lines)</h3>
+
+<h4>Read in the two data files:</h4>
+
+<p>pml_train&lt;- read.table(&quot;C:\Users\vic\SkyDrive\Education\Coursera\Machine_Learning_June2014\pml-training.csv&quot;, header=TRUE,sep = &quot;,&quot;, quote = &quot;\&quot;&quot;) # Training</p>
+
+<p>pml_train&lt;-pml_train[,7:dim(pml_train)[2]] # Get rid of training set metadata in first 6 columns</p>
+
+<p>pml_test&lt;- read.table(&quot;C:\Users\vic\SkyDrive\Education\Coursera\Machine_Learning_June2014\pml-testing.csv&quot;, header=TRUE,sep = &quot;,&quot;, quote = &quot;\&quot;&quot;) # Test</p>
+
+<p>pml_test&lt;-pml_test[,7:dim(pml_test)[2]] # Get rid of test set metadata in first 6 columns</p>
+
+<h4>Are there any columns that are completely NA or empty in the test dataset (those vars will not be of predictive use!)</h4>
+
+<p>pml_test_useful  &lt;- pml_test[,colSums(is.na(pml_test))&lt;nrow(pml_test)] # Keep only cols that are not all NA or empty</p>
+
+<h4>So if the test dataset lacks those variables, omit them from the training set as well</h4>
+
+<p>pml_train_useful &lt;- pml_train[,colSums(is.na(pml_test))&lt;nrow(pml_test)] # Keep only cols that are not all NA or empty</p>
+
+<h4>Split the training data into two portions: Train and Validation</h4>
+
+<p>in_train =createDataPartition(y=pml_train_useful$classe, p=0.6,list=FALSE)</p>
+
+<p>df_train =pml_train_useful[in_train, ] # Training subset</p>
+
+<p>df_valid =pml_train_useful[-in_train, ] # Validation subset</p>
+
+<h3>(1) Fit the Recursive Partitioning model:-</h3>
+
+<p>modFit=train(classe ~ .,method=&quot;rpart&quot;, data=df_train)</p>
+
+<h4>Do Recursive Partitioning predictions on the validation datset:-</h4>
+
+<p>pred=predict(modFit, newdata=df_valid[,1:(length(pml_train_useful)-1)])</p>
+
+<h4>Print the table of Recursive Partitioning predicted vs actual for the validation subset:-</h4>
+
+<p>table(pred,df_valid[,dim(df_valid)[2]])</p>
+
+<h3>(2) Next fit a Random Forests model:-</h3>
+
+<p>modFit_RF=train(classe ~ .,method=&quot;rf&quot;, data=df_train, prox=TRUE)</p>
+
+<h4>Do Random Forests predictions on the validation datset:-</h4>
+
+<p>pred_RF=predict(modFit_RF, newdata=df_valid[,1:(length(pml_train_useful)-1)])</p>
+
+<h4>Print the table of Random Forests predicted vs actual for the validation subset:-</h4>
+
+<p>table(pred_RF,df_valid[,dim(df_valid)[2]])</p>
+
+<h3>Technical Appendix II: Miscellaneous</h3>
+
+<pre><code>## [1] &quot;Remaining variables for model fitting and prediction:&quot;
+</code></pre>
+
+<pre><code>##  [1] &quot;num_window&quot;           &quot;roll_belt&quot;            &quot;pitch_belt&quot;          
+##  [4] &quot;yaw_belt&quot;             &quot;total_accel_belt&quot;     &quot;gyros_belt_x&quot;        
+##  [7] &quot;gyros_belt_y&quot;         &quot;gyros_belt_z&quot;         &quot;accel_belt_x&quot;        
+## [10] &quot;accel_belt_y&quot;         &quot;accel_belt_z&quot;         &quot;magnet_belt_x&quot;       
+## [13] &quot;magnet_belt_y&quot;        &quot;magnet_belt_z&quot;        &quot;roll_arm&quot;            
+## [16] &quot;pitch_arm&quot;            &quot;yaw_arm&quot;              &quot;total_accel_arm&quot;     
+## [19] &quot;gyros_arm_x&quot;          &quot;gyros_arm_y&quot;          &quot;gyros_arm_z&quot;         
+## [22] &quot;accel_arm_x&quot;          &quot;accel_arm_y&quot;          &quot;accel_arm_z&quot;         
+## [25] &quot;magnet_arm_x&quot;         &quot;magnet_arm_y&quot;         &quot;magnet_arm_z&quot;        
+## [28] &quot;roll_dumbbell&quot;        &quot;pitch_dumbbell&quot;       &quot;yaw_dumbbell&quot;        
+## [31] &quot;total_accel_dumbbell&quot; &quot;gyros_dumbbell_x&quot;     &quot;gyros_dumbbell_y&quot;    
+## [34] &quot;gyros_dumbbell_z&quot;     &quot;accel_dumbbell_x&quot;     &quot;accel_dumbbell_y&quot;    
+## [37] &quot;accel_dumbbell_z&quot;     &quot;magnet_dumbbell_x&quot;    &quot;magnet_dumbbell_y&quot;   
+## [40] &quot;magnet_dumbbell_z&quot;    &quot;roll_forearm&quot;         &quot;pitch_forearm&quot;       
+## [43] &quot;yaw_forearm&quot;          &quot;total_accel_forearm&quot;  &quot;gyros_forearm_x&quot;     
+## [46] &quot;gyros_forearm_y&quot;      &quot;gyros_forearm_z&quot;      &quot;accel_forearm_x&quot;     
+## [49] &quot;accel_forearm_y&quot;      &quot;accel_forearm_z&quot;      &quot;magnet_forearm_x&quot;    
+## [52] &quot;magnet_forearm_y&quot;     &quot;magnet_forearm_z&quot;
+</code></pre>
+
+<pre><code>## [1] &quot;Tree Diagram for Recursive Partitioning Model&quot;
+</code></pre>
+
+<p><img src="figure/computing.png" alt="plot of chunk computing"> </p>
+
+</body>
+
+</html>
