@@ -163,10 +163,15 @@ This conclusion has been arrived at by investigating two prediction algorithms:<
 </ul>
 
 <p>The Recursive Partioning algorithm was a poor performer, with an estimated accuracy
-of only approximately 54.7%. On the other hand the Random Forests algorithm produced an
-estimated accuracy of approximately 99.8%.
-There is a steep computational cost associated with the more successful algorithm,
+of only approximately 54.7%. (The 60% training subset yielded a higher accuracy of about 58.0% so somewhat less than this was expected from the 40% validation subset.) </p>
+
+<p>On the other hand the Random Forests algorithm produced an
+estimated accuracy of approximately 99.8% on the validation subset and this was fully consistent with the results on the 60% training subset.</p>
+
+<p>There is a steep computational cost associated with the more successful algorithm,
 however. On a 3Ghz 2-CPU/4-Core processor the less successful algorithm executed in about 5 minutes, but the Randon Forests algorithm concluded after about 6 hours of execution. This is a 72-fold increase in computational time.</p>
+
+<p>Note: A more careful examination of the fitted Recursive Partitioning model indicates that only 6 of the 53 variables were used to classify the data. It is very possible that learning more about the setting of the parameters for this model might make it yield much better results, albeit at the cost of increased computational time.</p>
 
 <h4>Methodology</h4>
 
